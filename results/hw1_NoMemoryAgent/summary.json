@@ -1,0 +1,35 @@
+{
+  "agent": "NoMemoryAgent",
+  "model_dir": "/home/isai-lab/hw1/submission/M11515058/model",
+  "params_M": 63.91,
+  "data_dir": "data/val",
+  "max_context_chars": 300,
+  "score": "option",
+  "chat_template": true,
+  "memory": {
+    "per_type": {
+      "single": 0.23333333333333334,
+      "update": 0.0975609756097561,
+      "multi": 0.1875,
+      "abstain": 0.4883720930232558,
+      "distractor": 0.20833333333333334,
+      "tool": 0.16666666666666666
+    },
+    "macro_acc": 0.23029440032772422,
+    "micro_acc": 0.22666666666666666,
+    "n_questions": 300,
+    "seconds": 15.22773265838623
+  },
+  "tool": {
+    "format_validity": 0.0,
+    "decision_acc": 0.13,
+    "tool_acc": 0.0,
+    "arg_acc": 0.0,
+    "end_to_end": 0.13,
+    "n_items": 200,
+    "seconds": 129.72346878051758
+  },
+  "leaderboard_score": 0.20020608022940695,
+  "total_seconds": 144.95668840408325,
+  "within_time_limit": true
+}

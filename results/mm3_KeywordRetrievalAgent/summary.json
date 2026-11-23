@@ -1,0 +1,35 @@
+{
+  "agent": "KeywordRetrievalAgent",
+  "model_dir": "/home/isai-lab/hw1/minimind-3",
+  "params_M": 63.91,
+  "data_dir": "data/val",
+  "max_context_chars": 300,
+  "score": "option",
+  "chat_template": true,
+  "memory": {
+    "per_type": {
+      "single": 0.38333333333333336,
+      "update": 0.3170731707317073,
+      "multi": 0.22916666666666666,
+      "abstain": 0.37209302325581395,
+      "distractor": 0.3958333333333333,
+      "tool": 0.3
+    },
+    "macro_acc": 0.33291658788680906,
+    "micro_acc": 0.3333333333333333,
+    "n_questions": 300,
+    "seconds": 10.455864429473877
+  },
+  "tool": {
+    "format_validity": 0.5555555555555556,
+    "decision_acc": 0.655,
+    "tool_acc": 0.22988505747126436,
+    "arg_acc": 0.0,
+    "end_to_end": 0.055,
+    "n_items": 200,
+    "seconds": 110.56853485107422
+  },
+  "leaderboard_score": 0.24954161152076632,
+  "total_seconds": 121.02984476089478,
+  "within_time_limit": true
+}

@@ -1,0 +1,20 @@
+# 助教提供的檔案與資料（未經授權不公開）
+eval_agent.py
+agent_base.py
+tool_spec.json
+gen_hw2_data.py
+templates_public.py
+check_data.py
+README_*.md
+MD5SUMS_public
+data/
+hw2_student_release.zip
+# 每題的預測細節含 val 題目內容
+results/*/memory_pred.jsonl
+results/*/tool_pred.jsonl
+# 模型與打包
+models/
+submission/*/model/
+*.zip
+__pycache__/
+*:Zone.Identifier

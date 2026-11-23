@@ -1,0 +1,18 @@
+model params=63.9M  chat_template=True  agent=RecentContextAgent  data=data/val
+  memory 10/30 personas, 4s
+  memory 20/30 personas, 8s
+  memory 30/30 personas, 11s
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+
+================ RESULT ================
+Memory Accuracy (macro) = 0.2401   (micro 0.2333, random ≈ 0.25)
+  single      0.1833
+  update      0.1220
+  multi       0.2083
+  abstain     0.5814
+  distractor  0.1458
+  tool        0.2000
+Tool: format=0.000 decision=0.130 tool=0.000 arg=0.000 e2e=0.130
+Leaderboard Score = 0.7 × 0.2401 + 0.3 × 0.1300 = 0.2071
+Time: 132s  (limit 1800s, ok=True)
+Saved to results/hw1_RecentContextAgent
