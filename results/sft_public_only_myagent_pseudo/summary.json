@@ -1,0 +1,35 @@
+{
+  "agent": "MyAgent",
+  "model_dir": "models/sft_public_only",
+  "params_M": 63.91,
+  "data_dir": "data/pseudo_test",
+  "max_context_chars": 300,
+  "score": "option",
+  "chat_template": true,
+  "memory": {
+    "per_type": {
+      "single": 0.76,
+      "update": 0.5906040268456376,
+      "multi": 0.6428571428571429,
+      "abstain": 0.9605263157894737,
+      "distractor": 0.6344827586206897,
+      "tool": 0.975
+    },
+    "macro_acc": 0.760578374018824,
+    "micro_acc": 0.772,
+    "n_questions": 1000,
+    "seconds": 39.25090503692627
+  },
+  "tool": {
+    "format_validity": 1.0,
+    "decision_acc": 0.9633333333333334,
+    "tool_acc": 0.9183673469387755,
+    "arg_acc": 0.6571428571428571,
+    "end_to_end": 0.6966666666666667,
+    "n_items": 300,
+    "seconds": 77.76944494247437
+  },
+  "leaderboard_score": 0.7414048618131768,
+  "total_seconds": 117.10085606575012,
+  "within_time_limit": true
+}

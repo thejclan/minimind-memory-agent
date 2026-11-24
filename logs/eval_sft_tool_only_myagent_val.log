@@ -1,0 +1,18 @@
+model params=63.9M  chat_template=True  agent=MyAgent  data=data/val
+  memory 10/30 personas, 5s
+  memory 20/30 personas, 9s
+  memory 30/30 personas, 12s
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+
+================ RESULT ================
+Memory Accuracy (macro) = 0.2789   (micro 0.3000, random ≈ 0.25)
+  single      0.4000
+  update      0.2195
+  multi       0.2292
+  abstain     0.0000
+  distractor  0.2917
+  tool        0.5333
+Tool: format=1.000 decision=1.000 tool=1.000 arg=1.000 e2e=1.000
+Leaderboard Score = 0.7 × 0.2789 + 0.3 × 1.0000 = 0.4953
+Time: 75s  (limit 1800s, ok=True)
+Saved to results/sft_tool_only_myagent_val

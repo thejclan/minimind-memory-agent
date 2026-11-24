@@ -1,0 +1,30 @@
+== 1. 訓練消融模型
+訓練資料：tool 6000 筆 ｜回覆結尾： '<|im_end|>\n'
+完成：/home/isai-lab/hw2/models/sft_tool_only（重新載入成功，參數量 63.91M，訓練 2.3 分鐘）
+訓練資料：read 12000 筆 ｜回覆結尾： '<|im_end|>\n'
+完成：/home/isai-lab/hw2/models/sft_read_only（重新載入成功，參數量 63.91M，訓練 5.7 分鐘）
+訓練資料：tool 3000 筆、read 6000 筆 ｜回覆結尾： '<|im_end|>\n'
+完成：/home/isai-lab/hw2/models/sft_public_only（重新載入成功，參數量 63.91M，訓練 4.1 分鐘）
+== 2. 評估（val 與模擬測試集）
+mm3_keyword_val: Leaderboard Score = 0.7 × 0.3329 + 0.3 × 0.0550 = 0.2495
+mm3_myagent_val: Leaderboard Score = 0.7 × 0.4964 + 0.3 × 0.0550 = 0.3640
+sft_v1_nomemory_val: Leaderboard Score = 0.7 × 0.2100 + 0.3 × 1.0000 = 0.4470
+sft_v1_keyword_val: Leaderboard Score = 0.7 × 0.4689 + 0.3 × 1.0000 = 0.6283
+sft_v1_myagent_val: Leaderboard Score = 0.7 × 0.9232 + 0.3 × 1.0000 = 0.9463
+sft_tool_only_myagent_val: Leaderboard Score = 0.7 × 0.2789 + 0.3 × 1.0000 = 0.4953
+sft_read_only_myagent_val: Leaderboard Score = 0.7 × 0.9197 + 0.3 × 0.1300 = 0.6828
+sft_public_only_myagent_val: Leaderboard Score = 0.7 × 0.9267 + 0.3 × 1.0000 = 0.9487
+mm3_keyword_pseudo: Leaderboard Score = 0.7 × 0.2949 + 0.3 × 0.0533 = 0.2224
+mm3_myagent_pseudo: Leaderboard Score = 0.7 × 0.4681 + 0.3 × 0.0533 = 0.3436
+sft_v1_nomemory_pseudo: Leaderboard Score = 0.7 × 0.2209 + 0.3 × 0.7033 = 0.3656
+sft_v1_keyword_pseudo: Leaderboard Score = 0.7 × 0.3780 + 0.3 × 0.7033 = 0.4756
+sft_v1_myagent_pseudo: Leaderboard Score = 0.7 × 0.7793 + 0.3 × 0.7033 = 0.7565
+sft_tool_only_myagent_pseudo: Leaderboard Score = 0.7 × 0.2904 + 0.3 × 0.7400 = 0.4253
+sft_read_only_myagent_pseudo: Leaderboard Score = 0.7 × 0.7775 + 0.3 × 0.1833 = 0.5992
+sft_public_only_myagent_pseudo: Leaderboard Score = 0.7 × 0.7606 + 0.3 × 0.6967 = 0.7414
+== 3. TMMLU+ 退化評估（HW1 的保留集）
+tmmlu minimind3 holdout:   MACRO (official) 0.2342   micro            0.2489 ± 0.0200 
+tmmlu minimind3 holdout_shuffled:   MACRO (official) 0.2770   micro            0.2639 ± 0.0204 
+tmmlu sft_v1 holdout:   MACRO (official) 0.2864   micro            0.2768 ± 0.0207 
+tmmlu sft_v1 holdout_shuffled:   MACRO (official) 0.2089   micro            0.2468 ± 0.0200 
+== 完成

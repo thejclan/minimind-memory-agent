@@ -1,0 +1,25 @@
+model params=63.9M  chat_template=True  agent=KeywordRetrievalAgent  data=data/pseudo_test
+  memory 10/100 personas, 5s
+  memory 20/100 personas, 9s
+  memory 30/100 personas, 14s
+  memory 40/100 personas, 17s
+  memory 50/100 personas, 20s
+  memory 60/100 personas, 23s
+  memory 70/100 personas, 27s
+  memory 80/100 personas, 30s
+  memory 90/100 personas, 33s
+  memory 100/100 personas, 36s
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+
+================ RESULT ================
+Memory Accuracy (macro) = 0.2949   (micro 0.2980, random ≈ 0.25)
+  single      0.3150
+  update      0.2617
+  multi       0.2403
+  abstain     0.3947
+  distractor  0.2276
+  tool        0.3300
+Tool: format=0.553 decision=0.610 tool=0.196 arg=0.004 e2e=0.053
+Leaderboard Score = 0.7 × 0.2949 + 0.3 × 0.0533 = 0.2224
+Time: 175s  (limit 1800s, ok=True)
+Saved to results/mm3_keyword_pseudo

@@ -1,0 +1,53 @@
+訓練資料：tool 3000 筆、read 6000 筆 ｜回覆結尾： '<|im_end|>\n'
+---- 工具呼叫範例（模型看到的結尾 + 要學的輸出）----
+tool_call> XML tags:
+<tool_call>
+{"name": <function-name>, "arguments": <args-json-object>}
+</tool_call><|im_end|>
+<|im_start|>user
+最近好累
+473加336是多少？<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+【<tool_call>
+{"name": "calculator", "arguments": {"expression": "473+336"}}
+</tool_call><|im_end|>
+】
+epoch 1 step 100/3376 tool_loss 0.7312 read_loss 0.9050 read_train_acc 0.849 lr 2.00e-05 0.1min
+epoch 1 step 200/3376 tool_loss 0.7777 read_loss 0.9270 read_train_acc 0.860 lr 1.94e-05 0.2min
+epoch 1 step 300/3376 tool_loss 0.6546 read_loss 0.8480 read_train_acc 0.895 lr 1.88e-05 0.4min
+epoch 1 step 400/3376 tool_loss 0.5119 read_loss 0.6703 read_train_acc 0.925 lr 1.82e-05 0.5min
+epoch 1 step 500/3376 tool_loss 0.4160 read_loss 0.7042 read_train_acc 0.920 lr 1.76e-05 0.6min
+epoch 1 step 600/3376 tool_loss 0.3469 read_loss 0.6385 read_train_acc 0.938 lr 1.70e-05 0.7min
+epoch 1 step 700/3376 tool_loss 0.2885 read_loss 0.8015 read_train_acc 0.907 lr 1.63e-05 0.9min
+epoch 1 step 800/3376 tool_loss 0.2599 read_loss 0.5287 read_train_acc 0.940 lr 1.57e-05 1.0min
+epoch 1 step 900/3376 tool_loss 0.2310 read_loss 0.7373 read_train_acc 0.922 lr 1.51e-05 1.1min
+epoch 1 step 1000/3376 tool_loss 0.1373 read_loss 0.5988 read_train_acc 0.948 lr 1.45e-05 1.2min
+epoch 1 step 1100/3376 tool_loss 0.0836 read_loss 0.7138 read_train_acc 0.925 lr 1.39e-05 1.4min
+epoch 1 step 1200/3376 tool_loss 0.0706 read_loss 0.6840 read_train_acc 0.925 lr 1.33e-05 1.5min
+epoch 1 step 1300/3376 tool_loss 0.0602 read_loss 0.5107 read_train_acc 0.938 lr 1.27e-05 1.6min
+epoch 1 step 1400/3376 tool_loss 0.0551 read_loss 0.5943 read_train_acc 0.922 lr 1.21e-05 1.7min
+epoch 1 step 1500/3376 tool_loss 0.0459 read_loss 0.5223 read_train_acc 0.938 lr 1.15e-05 1.8min
+epoch 1 step 1600/3376 tool_loss 0.0405 read_loss 0.4775 read_train_acc 0.945 lr 1.08e-05 1.9min
+epoch 2 step 1700/3376 tool_loss 0.0347 read_loss 0.4104 read_train_acc 0.945 lr 1.02e-05 2.1min
+epoch 2 step 1800/3376 tool_loss 0.0319 read_loss 0.3193 read_train_acc 0.943 lr 9.62e-06 2.2min
+epoch 2 step 1900/3376 tool_loss 0.0265 read_loss 0.3305 read_train_acc 0.943 lr 9.01e-06 2.3min
+epoch 2 step 2000/3376 tool_loss 0.0209 read_loss 0.2649 read_train_acc 0.955 lr 8.40e-06 2.4min
+epoch 2 step 2100/3376 tool_loss 0.0201 read_loss 0.3017 read_train_acc 0.945 lr 7.79e-06 2.5min
+epoch 2 step 2200/3376 tool_loss 0.0195 read_loss 0.3359 read_train_acc 0.943 lr 7.18e-06 2.7min
+epoch 2 step 2300/3376 tool_loss 0.0163 read_loss 0.3337 read_train_acc 0.943 lr 6.57e-06 2.8min
+epoch 2 step 2400/3376 tool_loss 0.0146 read_loss 0.2828 read_train_acc 0.953 lr 5.96e-06 2.9min
+epoch 2 step 2500/3376 tool_loss 0.0136 read_loss 0.3391 read_train_acc 0.955 lr 5.35e-06 3.0min
+epoch 2 step 2600/3376 tool_loss 0.0135 read_loss 0.2745 read_train_acc 0.963 lr 4.74e-06 3.2min
+epoch 2 step 2700/3376 tool_loss 0.0132 read_loss 0.2882 read_train_acc 0.953 lr 4.13e-06 3.3min
+epoch 2 step 2800/3376 tool_loss 0.0126 read_loss 0.3301 read_train_acc 0.945 lr 3.52e-06 3.4min
+epoch 2 step 2900/3376 tool_loss 0.0130 read_loss 0.2636 read_train_acc 0.960 lr 2.91e-06 3.5min
+epoch 2 step 3000/3376 tool_loss 0.0130 read_loss 0.3143 read_train_acc 0.963 lr 2.30e-06 3.6min
+epoch 2 step 3100/3376 tool_loss 0.0118 read_loss 0.3052 read_train_acc 0.955 lr 1.69e-06 3.7min
+epoch 2 step 3200/3376 tool_loss 0.0119 read_loss 0.2552 read_train_acc 0.960 lr 1.07e-06 3.9min
+epoch 2 step 3300/3376 tool_loss 0.0116 read_loss 0.3061 read_train_acc 0.955 lr 4.64e-07 4.0min
+epoch 2 step 3376/3376 tool_loss 0.0120 read_loss 0.2669 read_train_acc 0.958 lr 0.00e+00 4.1min
+完成：/home/isai-lab/hw2/models/sft_public_only（重新載入成功，參數量 63.91M，訓練 4.1 分鐘）

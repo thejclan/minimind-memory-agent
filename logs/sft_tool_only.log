@@ -1,0 +1,27 @@
+訓練資料：tool 6000 筆 ｜回覆結尾： '<|im_end|>\n'
+---- 工具呼叫範例（模型看到的結尾 + 要學的輸出）----
+tool_call> XML tags:
+<tool_call>
+{"name": <function-name>, "arguments": <args-json-object>}
+</tool_call><|im_end|>
+<|im_start|>user
+最近好累
+473加336是多少？<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+【<tool_call>
+{"name": "calculator", "arguments": {"expression": "473+336"}}
+</tool_call><|im_end|>
+】
+epoch 1 step 100/750 tool_loss 0.0941 read_loss 0.0000 read_train_acc 0.000 lr 1.79e-05 0.3min
+epoch 1 step 200/750 tool_loss 0.0223 read_loss 0.0000 read_train_acc 0.000 lr 1.51e-05 0.6min
+epoch 1 step 300/750 tool_loss 0.0167 read_loss 0.0000 read_train_acc 0.000 lr 1.24e-05 0.9min
+epoch 2 step 400/750 tool_loss 0.0126 read_loss 0.0000 read_train_acc 0.000 lr 9.62e-06 1.3min
+epoch 2 step 500/750 tool_loss 0.0108 read_loss 0.0000 read_train_acc 0.000 lr 6.87e-06 1.6min
+epoch 2 step 600/750 tool_loss 0.0098 read_loss 0.0000 read_train_acc 0.000 lr 4.12e-06 1.9min
+epoch 2 step 700/750 tool_loss 0.0109 read_loss 0.0000 read_train_acc 0.000 lr 1.37e-06 2.2min
+epoch 2 step 750/750 tool_loss 0.0097 read_loss 0.0000 read_train_acc 0.000 lr 0.00e+00 2.3min
+完成：/home/isai-lab/hw2/models/sft_tool_only（重新載入成功，參數量 63.91M，訓練 2.3 分鐘）

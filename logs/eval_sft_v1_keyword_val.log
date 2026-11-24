@@ -1,0 +1,18 @@
+model params=63.9M  chat_template=True  agent=KeywordRetrievalAgent  data=data/val
+  memory 10/30 personas, 4s
+  memory 20/30 personas, 7s
+  memory 30/30 personas, 11s
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+
+================ RESULT ================
+Memory Accuracy (macro) = 0.4689   (micro 0.4633, random ≈ 0.25)
+  single      0.8167
+  update      0.4146
+  multi       0.4583
+  abstain     0.7907
+  distractor  0.2500
+  tool        0.0833
+Tool: format=1.000 decision=1.000 tool=1.000 arg=1.000 e2e=1.000
+Leaderboard Score = 0.7 × 0.4689 + 0.3 × 1.0000 = 0.6283
+Time: 69s  (limit 1800s, ok=True)
+Saved to results/sft_v1_keyword_val

@@ -1,0 +1,35 @@
+{
+  "agent": "KeywordRetrievalAgent",
+  "model_dir": "models/sft_v1",
+  "params_M": 63.91,
+  "data_dir": "data/val",
+  "max_context_chars": 300,
+  "score": "option",
+  "chat_template": true,
+  "memory": {
+    "per_type": {
+      "single": 0.8166666666666667,
+      "update": 0.4146341463414634,
+      "multi": 0.4583333333333333,
+      "abstain": 0.7906976744186046,
+      "distractor": 0.25,
+      "tool": 0.08333333333333333
+    },
+    "macro_acc": 0.4689441923489002,
+    "micro_acc": 0.4633333333333333,
+    "n_questions": 300,
+    "seconds": 10.721542596817017
+  },
+  "tool": {
+    "format_validity": 1.0,
+    "decision_acc": 1.0,
+    "tool_acc": 1.0,
+    "arg_acc": 1.0,
+    "end_to_end": 1.0,
+    "n_items": 200,
+    "seconds": 58.68498468399048
+  },
+  "leaderboard_score": 0.62826093464423,
+  "total_seconds": 69.41213655471802,
+  "within_time_limit": true
+}
