@@ -7,7 +7,7 @@
 讀記憶（read）：
   prompt = eval_agent.build_prompt（記憶文字由 MyAgent.prepare() 實際產生）
   四個選項都存下，訓練時讓正確選項的平均機率高於其他選項
-資料只來自 train 與自製的 A 套（val、B 套模擬測試集不使用）。
+資料只來自 train 與自製的 A、C 套（val、B 套模擬測試、D 套盲測都不使用）。
 
   python build_sft_data.py --model_dir <minimind-3> --out data/sft/sft.jsonl \
       --sources data/train data/train_extraA
@@ -31,15 +31,59 @@ def tool_call_text(name, args):
     return "<tool_call>\n" + json.dumps({"name": name, "arguments": args}, ensure_ascii=False) + "\n</tool_call>"
 
 
-def tool_examples(path, tok, rng):
+def value_pool():
+    """換值增強用的詞庫：公開模板與自製 A、C 套的所有值（不含 B、D 套），再加上隨機組字。"""
+    import importlib.util
+    mods = []
+    for path in ["templates_public.py", "templates/extra_A.py", "templates/extra_C.py"]:
+        if os.path.exists(path):
+            spec = importlib.util.spec_from_file_location(os.path.basename(path)[:-3], path)
+            m = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(m)
+            mods.append(m)
+    words, chars = set(), set()
+    for m in mods:
+        for d in list(getattr(m, "ATTRS", {}).values()) + list(getattr(m, "EXTRA", {}).values()) \
+                + list(getattr(m, "NEW_ATTRS", {}).values()):
+            for v in d.get("pool", []):
+                words.add(v)
+                chars.update(c for c in v if "\u4e00" <= c <= "\u9fff")
+    return sorted(words), sorted(chars)
+
+
+def augment_value(it, rng, pool):
+    """把 memory_save 的值換成別的詞（一半用詞庫、一半隨機組字），讓模型學會「照抄原句」而不是背值。"""
+    exp = it["expected"]
+    v = exp.get("args", {}).get("value")
+    last = it["context"][-1]
+    if not isinstance(v, str) or not v or last.count(v) != 1:
+        return None
+    words, chars = pool
+    new = rng.choice(words) if rng.random() < 0.5 else "".join(rng.choice(chars) for _ in range(rng.randint(2, 4)))
+    if new == v or new in last:
+        return None
+    it = json.loads(json.dumps(it, ensure_ascii=False))
+    it["context"][-1] = last.replace(v, new)
+    it["expected"]["args"]["value"] = new
+    it["id"] += "_aug"
+    return it
+
+
+def tool_examples(path, tok, rng, value_aug=0.0, pool=None):
     tools = BaseAgent.tools()
     for line in open(path, encoding="utf-8"):
         it = json.loads(line)
-        msgs = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": "\n".join(it["context"])}]
-        prompt = tok.apply_chat_template(msgs, tools=tools, tokenize=False, add_generation_prompt=True)
-        exp = it["expected"]
-        target = tool_call_text(exp["tool"], exp.get("args", {})) if exp["action"] == "call" else rng.choice(REPLIES)
-        yield dict(task="tool", id=it["id"], kind=it["kind"], prompt=prompt, target=target)
+        items = [it]
+        if value_aug > 0 and it["kind"] in ("save", "update") and rng.random() < value_aug:
+            aug = augment_value(it, rng, pool)
+            if aug:
+                items.append(aug)
+        for it in items:
+            msgs = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": "\n".join(it["context"])}]
+            prompt = tok.apply_chat_template(msgs, tools=tools, tokenize=False, add_generation_prompt=True)
+            exp = it["expected"]
+            target = tool_call_text(exp["tool"], exp.get("args", {})) if exp["action"] == "call" else rng.choice(REPLIES)
+            yield dict(task="tool", id=it["id"], kind=it["kind"], prompt=prompt, target=target)
 
 
 def read_examples(path, tok, agent, rng, n_shuffle):
@@ -73,6 +117,10 @@ def main():
     ap.add_argument("--n_shuffle", type=int, default=2, help="讀記憶題每題產生幾種選項順序")
     ap.add_argument("--no_read", action="store_true", help="只產生工具呼叫資料（消融用）")
     ap.add_argument("--no_tool", action="store_true", help="只產生讀記憶資料（消融用）")
+    ap.add_argument("--context_mode", default=None,
+                    help="MyAgent 記憶文字的組法（retrieve / fill / fill_hint / chrono），預設用 my_agent.py 的設定")
+    ap.add_argument("--value_aug", type=float, default=0.0,
+                    help="memory_save 題目有多少比例額外產生一筆「換值」的增強資料")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--device", default="cuda" if __import__("torch").cuda.is_available() else "cpu",
                     help="embedding 模型使用的裝置")
@@ -83,14 +131,18 @@ def main():
     agent = None
     if not args.no_read:
         from my_agent import MyAgent
+        if args.context_mode:
+            MyAgent.context_mode = args.context_mode
         agent = MyAgent(None, tok, args.device)
+        print("context_mode =", MyAgent.context_mode)
+    pool = value_pool() if args.value_aug > 0 else None
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     counts = {}
     with open(args.out, "w", encoding="utf-8") as f:
         for src in args.sources:
             gens = []
             if not args.no_tool:
-                gens.append(tool_examples(os.path.join(src, "tool.jsonl"), tok, rng))
+                gens.append(tool_examples(os.path.join(src, "tool.jsonl"), tok, rng, args.value_aug, pool))
             if not args.no_read:
                 gens.append(read_examples(os.path.join(src, "memory.jsonl"), tok, agent, rng, args.n_shuffle))
             for g in gens:

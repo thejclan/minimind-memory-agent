@@ -86,6 +86,12 @@ class MyAgent(BaseAgent):
     split_words = True  # 是否也用「和、跟」切子問題
     budget = 300
     query_prefix = ""    # bge 的檢索指令前綴（實測後決定是否使用）
+    # 記憶文字的組法：
+    #   retrieve  只放檢索到的句子，沒找到寫「你沒有提過」（第二版）
+    #   fill      檢索到的句子放最後，前面依時間順序補上其他記憶，直到 300 字
+    #   fill_hint 同 fill，但沒檢索到時最後一行寫「你沒有提過」
+    #   chrono    全部依時間順序；超過 300 字時先刪最早的非檢索句
+    context_mode = os.environ.get("HW2_CONTEXT_MODE", "chrono")
 
     def __init__(self, model, tokenizer, device):
         super().__init__(model, tokenizer, device)
@@ -206,7 +212,7 @@ class MyAgent(BaseAgent):
             return ABSTAIN if v is None else f"計算結果：{v + 1}個"
         # 一年的房租 = 月租 × 12
         if "租" in q and re.search(r"一年|整年|每年|年", q):
-            v = self._number(("房租", "租"))
+            v = self._number(("房租", "租", "房東"))
             return ABSTAIN if v is None else f"計算結果：{v * 12}元"
         who = son if "兒子" in q else daughter if "女兒" in q else None
         # 明年幾歲 = 年齡 + 1
@@ -241,10 +247,27 @@ class MyAgent(BaseAgent):
             for i in self._retrieve(sq, active):
                 if i not in picked:
                     picked.append(i)
-        if not picked:
-            return ABSTAIN
-        # 依子問題的順序排列（與多事實題選項的順序一致）
-        return "\n".join(self.memory[i]["text"] for i in picked)[-self.budget:]
+        return self._render(picked, active)
+
+    def _render(self, picked, active):
+        text = lambda ids: "\n".join(self.memory[i]["text"] for i in ids)
+        mode = self.context_mode
+        if mode == "retrieve":
+            if not picked:
+                return ABSTAIN
+            return text(picked)[-self.budget:]          # 依子問題的順序排列（與多事實題選項的順序一致）
+        rest = [i for i in active if i not in picked]
+        if mode == "chrono":
+            keep = sorted(set(active))
+            for i in list(rest):                        # 太長時先刪最早的非檢索句
+                if len(text(keep)) <= self.budget:
+                    break
+                keep.remove(i)
+            return text(keep)[-self.budget:]
+        lines = [self.memory[i]["text"] for i in rest + picked]
+        if mode == "fill_hint" and not picked:
+            lines.append(ABSTAIN)
+        return "\n".join(lines)[-self.budget:] if lines else ABSTAIN
 
     # ------------------------------------------------------------------ snapshot
     def save_snapshot(self):
@@ -257,11 +280,121 @@ class MyAgent(BaseAgent):
     # ------------------------------------------------------------------ 工具呼叫
     TOOL_NAMES = ("memory_save", "memory_search", "calculator", "get_date")
 
+    DATE_RE = re.compile(r"(今天|今日|現在|目前).{0,6}(幾月|幾號|幾日|日期|星期幾|禮拜幾|週幾|哪一天|哪天)"
+                         r"|(幾月幾號|幾月幾日|星期幾|禮拜幾|週幾|今天的日期|今天日期)")
+
     def next_action(self, context: list) -> str:
         out = super().next_action(context)
+        last = context[-1] if context else ""
+        # 問今天日期／星期的句子一定要查 get_date（模型漏判時補上）
+        if self.DATE_RE.search(last) and "get_date" not in out:
+            return "<tool_call>\n" + json.dumps({"name": "get_date", "arguments": {}}, ensure_ascii=False) + "\n</tool_call>"
         if "<tool_call>" not in out:
             return out
-        return self.repair_call(out)
+        out = self.repair_call(out)
+        return self.normalize_args(out, last)
+
+    # ------------------------------------------------------------------ 工具參數正規化
+    OPS = [("/", re.compile(r"除以|平分|分給|每人|一人")),
+           ("*", re.compile(r"乘|買.{0,3}\d+\s*[張個杯盒份本件瓶包台組]|\d+\s*[張個杯盒份本件瓶包台組].{0,4}(總共|共|要)")),
+           ("-", re.compile(r"減|少|剩|花掉|扣|便宜|折")),
+           ("+", re.compile(r"加|又|再|總共|合計|一共|共"))]
+
+    # 公開模板的 key（屬性名稱）→ 使用者原句中應該出現的相關詞。模型給的 key 若是這些名稱之一，
+    # 但原句完全沒有相關詞（或出現別的類別詞），代表模型套錯了訓練時看過的名稱（多半是沒看過的新屬性），
+    # 就改用原句本身的描述當 key / query。
+    KEY_EVIDENCE = {
+        "名字": "名字 姓名 叫 喊 名 稱呼 認識", "居住地": "住 家在 搬 待在 定居 遷 城市 縣市 落腳 哪裡 生活",
+        "職業": "職業 工作 當 做 職 行 業 上班 轉行 任職 從事 身分 身份 靠 一名 一位 是個", "寵物種類": "寵物 動物 養 飼 隻",
+        "寵物名字": "寵物 名字 叫 取名 牠 喊", "最喜歡的食物": "食物 吃 愛 第一名 新歡 喜歡 迷上 點",
+        "過敏": "過敏 疹 癢", "生日月份": "生日 出生 生的", "運動": "運動 打 跑 游 爬山 瑜珈 騎 練 球",
+        "通勤方式": "通勤 上班 交通 公司 搭 騎 開車 走路", "喜歡的顏色": "顏色 色", "電影類型": "電影 片",
+        "大學主修": "主修 科系 大學 系 念 讀", "起床時間": "起床 醒 起來 鬧鐘", "女兒年齡": "女兒",
+        "兒子年齡": "兒子", "房租": "房租 租 房東", "兄弟姊妹數": "兄弟姊妹 手足 兄 姊 弟 妹 孩 家",
+    }
+    KEY_CONFLICT = {"最喜歡的食物": "甜點 早餐 午餐 晚餐 零食 水果 飲料 喝 點心 宵夜 茶 咖啡",
+                    "起床時間": "睡 上床 就寢", "名字": "寵物 牠", "電影類型": "書 小說 追劇 影集"}
+    FILLER = re.compile(r"什麼|哪一|哪個|哪種|哪裡|多少|幾|是|的|我|嗎|呢|啦|喔|了|[，。！？?!、\s]")
+
+    @classmethod
+    def ground_key(cls, key, text, value=None):
+        if not isinstance(key, str):
+            return key
+        ev = cls.KEY_EVIDENCE.get(key)
+        if ev is not None:
+            grounded = any(w in text for w in ev.split()) and \
+                not any(w in text for w in cls.KEY_CONFLICT.get(key, "").split())
+        else:
+            grounded = bool(key) and key in text or (len(key) > 2 and key[:2] in text)
+        if grounded:
+            return key
+        desc = text.replace(value, "") if value else text
+        desc = cls.FILLER.sub("", desc)
+        return desc if len(desc) >= 2 else key
+
+    @classmethod
+    def normalize_args(cls, out, last):
+        """模型決定呼叫哪個工具；參數只做「抄錯」的修正：
+        calculator 的算式改用使用者原句裡的數字；memory_save 的 value 必須是使用者原句的片段。"""
+        m = re.search(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", out, re.S)
+        if not m:
+            return out
+        try:
+            obj = json.loads(m.group(1))
+        except Exception:
+            return out
+        name, args = obj.get("name"), obj.get("arguments")
+        if not isinstance(args, dict):
+            return out
+        if name == "calculator":
+            expr = cls.fix_expression(str(args.get("expression", "")), last)
+            if expr:
+                args["expression"] = expr
+        elif name == "memory_save" and isinstance(args.get("value"), str):
+            args["value"] = cls.fix_value(args["value"], last)
+            args["key"] = cls.ground_key(args.get("key"), last, args["value"])
+        elif name == "memory_search":
+            args["query"] = cls.ground_key(args.get("query"), last)
+        else:
+            return out
+        return "<tool_call>\n" + json.dumps({"name": name, "arguments": args}, ensure_ascii=False) + "\n</tool_call>"
+
+    @classmethod
+    def fix_expression(cls, expr, last):
+        nums = re.findall(r"\d+(?:\.\d+)?", last)
+        clean = re.sub(r"[^\d\.\+\-\*/\(\)]", "", expr)
+        ok = bool(re.fullmatch(r"[\d\.]+([\+\-\*/][\d\.]+)+", clean)) and \
+            all(n in nums for n in re.findall(r"\d+(?:\.\d+)?", clean))
+        if len(nums) == 2:
+            t = last.replace("多少", "")                   # 「多少」的「少」不是減法
+            op = next((o for o, r in cls.OPS if r.search(t)), None)
+            if op is None:
+                mo = re.search(r"[\+\-\*/]", clean)
+                op = mo.group(0) if mo else None
+            if op:
+                a, b = nums
+                if op == "/" and not re.search(r"除以", last) and float(a) < float(b):
+                    a, b = b, a                          # 「3個人平分600元」→ 600/3
+                return f"{a}{op}{b}"
+        return clean if ok else None
+
+    @staticmethod
+    def fix_value(value, last):
+        if not value or value in last:
+            return value
+        best, best_score = value, 0.0
+        L = len(value)
+        for n in (L, L + 1, L - 1):
+            if n <= 0:
+                continue
+            for i in range(len(last) - n + 1):
+                w = last[i:i + n]
+                pos = sum(a == b for a, b in zip(w, value))      # 同位置相同的字
+                common = len(set(w) & set(value))
+                score = pos + 0.5 * common - 0.1 * abs(n - L) + 0.3 * (w[0] == value[0])
+                if score > best_score:
+                    best, best_score = w, score
+        return best if best_score >= 1.0 else value
 
     @classmethod
     def repair_call(cls, out):

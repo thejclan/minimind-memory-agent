@@ -1,0 +1,57 @@
+== 0. 產生 C 套訓練資料與 D 套盲測資料 18:31
+[skip] data/train_extraA
+[test] 300 personas, 3000 tool items -> data/train_extraC
+[skip] data/pseudo_test
+[test] 100 personas, 300 tool items -> data/blind_test
+8ad474959c03bfe274dd9fa5975e1e20  data/train_extraC/memory.jsonl
+b423b84b3dfc067ba3b1ce33eeef66a4  data/train_extraC/tool.jsonl
+a5112f91931c79bf6d77f0479582fb4d  data/blind_test/memory.jsonl
+6bee82a67adf42788ad979c278b014d8  data/blind_test/tool.jsonl
+== 1. 舊模型 sft_v1 + 新規則（retrieve 組法，只差工具參數修正與房租規則） 18:31
+sft_v1_rules3_pseudo: Leaderboard Score = 0.7 × 0.7834 + 0.3 × 0.7833 = 0.7834
+== 2. [fill] 產生 SFT 資料 18:34
+context_mode = fill
+  train          read    6000 筆
+  train          tool    3590 筆
+  train_extraA   read    6000 筆
+  train_extraA   tool    3531 筆
+  train_extraC   read    6000 筆
+  train_extraC   tool    3554 筆
+寫入 data/sft/sft_r2_fill.jsonl
+== 3. [fill] 訓練 18:34
+訓練資料：tool 10675 筆、read 18000 筆 ｜回覆結尾： '<|im_end|>\n'
+完成：/home/isai-lab/hw2/models/sft_r2_fill（重新載入成功，參數量 63.91M，訓練 25.9 分鐘）
+== 4. [fill] 評估 19:00
+sft_r2_fill_pseudo: Leaderboard Score = 0.7 × 0.9306 + 0.3 × 0.9533 = 0.9374
+sft_r2_fill_val: Leaderboard Score = 0.7 × 1.0000 + 0.3 × 1.0000 = 1.0000
+== 2. [chrono] 產生 SFT 資料 19:03
+context_mode = chrono
+  train          read    6000 筆
+  train          tool    3590 筆
+  train_extraA   read    6000 筆
+  train_extraA   tool    3531 筆
+  train_extraC   read    6000 筆
+  train_extraC   tool    3554 筆
+寫入 data/sft/sft_r2_chrono.jsonl
+== 3. [chrono] 訓練 19:04
+訓練資料：tool 10675 筆、read 18000 筆 ｜回覆結尾： '<|im_end|>\n'
+完成：/home/isai-lab/hw2/models/sft_r2_chrono（重新載入成功，參數量 63.91M，訓練 25.6 分鐘）
+== 4. [chrono] 評估 19:30
+sft_r2_chrono_pseudo: Leaderboard Score = 0.7 × 0.9493 + 0.3 × 0.9300 = 0.9435
+sft_r2_chrono_val: Leaderboard Score = 0.7 × 1.0000 + 0.3 × 1.0000 = 1.0000
+== 2. [fill_hint] 產生 SFT 資料 19:33
+context_mode = fill_hint
+  train          read    6000 筆
+  train          tool    3590 筆
+  train_extraA   read    6000 筆
+  train_extraA   tool    3531 筆
+  train_extraC   read    6000 筆
+  train_extraC   tool    3554 筆
+寫入 data/sft/sft_r2_fill_hint.jsonl
+== 3. [fill_hint] 訓練 19:34
+訓練資料：tool 10675 筆、read 18000 筆 ｜回覆結尾： '<|im_end|>\n'
+完成：/home/isai-lab/hw2/models/sft_r2_fill_hint（重新載入成功，參數量 63.91M，訓練 25.8 分鐘）
+== 4. [fill_hint] 評估 20:00
+sft_r2_fill_hint_pseudo: Leaderboard Score = 0.7 × 0.9247 + 0.3 × 0.9233 = 0.9243
+sft_r2_fill_hint_val: Leaderboard Score = 0.7 × 1.0000 + 0.3 × 1.0000 = 1.0000
+== 完成 20:03

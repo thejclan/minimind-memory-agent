@@ -1,0 +1,133 @@
+訓練資料：tool 11045 筆、read 20000 筆 ｜回覆結尾： '<|im_end|>\n'
+---- 工具呼叫範例（模型看到的結尾 + 要學的輸出）----
+tool_call> XML tags:
+<tool_call>
+{"name": <function-name>, "arguments": <args-json-object>}
+</tool_call><|im_end|>
+<|im_start|>user
+最近好累
+473加336是多少？<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+【<tool_call>
+{"name": "calculator", "arguments": {"expression": "473+336"}}
+</tool_call><|im_end|>
+】
+epoch 1 step 100/11382 tool_loss 0.4820 read_loss 1.5956 read_train_acc 0.514 lr 5.92e-06 0.3min
+epoch 1 step 200/11382 tool_loss 0.3162 read_loss 1.3824 read_train_acc 0.593 lr 1.18e-05 0.5min
+epoch 1 step 300/11382 tool_loss 0.3035 read_loss 1.4279 read_train_acc 0.635 lr 1.77e-05 0.8min
+epoch 1 step 400/11382 tool_loss 0.2982 read_loss 1.3928 read_train_acc 0.730 lr 1.99e-05 1.0min
+epoch 1 step 500/11382 tool_loss 0.2785 read_loss 1.4716 read_train_acc 0.752 lr 1.97e-05 1.2min
+epoch 1 step 600/11382 tool_loss 0.2457 read_loss 1.0212 read_train_acc 0.823 lr 1.95e-05 1.5min
+epoch 1 step 700/11382 tool_loss 0.2307 read_loss 1.2284 read_train_acc 0.810 lr 1.93e-05 1.7min
+epoch 1 step 800/11382 tool_loss 0.1961 read_loss 0.9433 read_train_acc 0.845 lr 1.92e-05 2.0min
+epoch 1 step 900/11382 tool_loss 0.1581 read_loss 0.9388 read_train_acc 0.855 lr 1.90e-05 2.2min
+epoch 1 step 1000/11382 tool_loss 0.1421 read_loss 0.9769 read_train_acc 0.865 lr 1.88e-05 2.5min
+epoch 1 step 1100/11382 tool_loss 0.1078 read_loss 0.8708 read_train_acc 0.892 lr 1.86e-05 2.7min
+epoch 1 step 1200/11382 tool_loss 0.0814 read_loss 0.7744 read_train_acc 0.890 lr 1.84e-05 3.0min
+epoch 1 step 1300/11382 tool_loss 0.0710 read_loss 0.8659 read_train_acc 0.890 lr 1.83e-05 3.2min
+epoch 1 step 1400/11382 tool_loss 0.0673 read_loss 0.6889 read_train_acc 0.910 lr 1.81e-05 3.5min
+epoch 1 step 1500/11382 tool_loss 0.0622 read_loss 0.6411 read_train_acc 0.927 lr 1.79e-05 3.7min
+epoch 1 step 1600/11382 tool_loss 0.0577 read_loss 0.5089 read_train_acc 0.953 lr 1.77e-05 4.0min
+epoch 1 step 1700/11382 tool_loss 0.0523 read_loss 0.6258 read_train_acc 0.927 lr 1.75e-05 4.2min
+epoch 1 step 1800/11382 tool_loss 0.0473 read_loss 0.5030 read_train_acc 0.945 lr 1.74e-05 4.5min
+epoch 1 step 1900/11382 tool_loss 0.0464 read_loss 0.4373 read_train_acc 0.945 lr 1.72e-05 4.7min
+epoch 1 step 2000/11382 tool_loss 0.0469 read_loss 0.5392 read_train_acc 0.930 lr 1.70e-05 5.0min
+epoch 1 step 2100/11382 tool_loss 0.0441 read_loss 0.5020 read_train_acc 0.943 lr 1.68e-05 5.2min
+epoch 1 step 2200/11382 tool_loss 0.0405 read_loss 0.5558 read_train_acc 0.943 lr 1.66e-05 5.5min
+epoch 1 step 2300/11382 tool_loss 0.0387 read_loss 0.4999 read_train_acc 0.943 lr 1.65e-05 5.7min
+epoch 1 step 2400/11382 tool_loss 0.0356 read_loss 0.4620 read_train_acc 0.943 lr 1.63e-05 6.0min
+epoch 1 step 2500/11382 tool_loss 0.0355 read_loss 0.4854 read_train_acc 0.932 lr 1.61e-05 6.2min
+epoch 1 step 2600/11382 tool_loss 0.0322 read_loss 0.5765 read_train_acc 0.938 lr 1.59e-05 6.4min
+epoch 1 step 2700/11382 tool_loss 0.0297 read_loss 0.3743 read_train_acc 0.963 lr 1.57e-05 6.7min
+epoch 1 step 2800/11382 tool_loss 0.0283 read_loss 0.4340 read_train_acc 0.955 lr 1.55e-05 6.9min
+epoch 1 step 2900/11382 tool_loss 0.0254 read_loss 0.4406 read_train_acc 0.948 lr 1.54e-05 7.2min
+epoch 1 step 3000/11382 tool_loss 0.0249 read_loss 0.1901 read_train_acc 0.975 lr 1.52e-05 7.4min
+epoch 1 step 3100/11382 tool_loss 0.0251 read_loss 0.3776 read_train_acc 0.960 lr 1.50e-05 7.7min
+epoch 1 step 3200/11382 tool_loss 0.0242 read_loss 0.2493 read_train_acc 0.965 lr 1.48e-05 7.9min
+epoch 1 step 3300/11382 tool_loss 0.0227 read_loss 0.3107 read_train_acc 0.958 lr 1.46e-05 8.2min
+epoch 1 step 3400/11382 tool_loss 0.0216 read_loss 0.2672 read_train_acc 0.968 lr 1.45e-05 8.4min
+epoch 1 step 3500/11382 tool_loss 0.0214 read_loss 0.3573 read_train_acc 0.960 lr 1.43e-05 8.7min
+epoch 1 step 3600/11382 tool_loss 0.0210 read_loss 0.4380 read_train_acc 0.953 lr 1.41e-05 8.9min
+epoch 1 step 3700/11382 tool_loss 0.0203 read_loss 0.3615 read_train_acc 0.963 lr 1.39e-05 9.2min
+epoch 1 step 3800/11382 tool_loss 0.0192 read_loss 0.3446 read_train_acc 0.963 lr 1.37e-05 9.4min
+epoch 1 step 3900/11382 tool_loss 0.0175 read_loss 0.2640 read_train_acc 0.960 lr 1.36e-05 9.7min
+epoch 1 step 4000/11382 tool_loss 0.0170 read_loss 0.3862 read_train_acc 0.948 lr 1.34e-05 9.9min
+epoch 1 step 4100/11382 tool_loss 0.0170 read_loss 0.5014 read_train_acc 0.953 lr 1.32e-05 10.2min
+epoch 1 step 4200/11382 tool_loss 0.0165 read_loss 0.4190 read_train_acc 0.945 lr 1.30e-05 10.4min
+epoch 1 step 4300/11382 tool_loss 0.0163 read_loss 0.4371 read_train_acc 0.950 lr 1.28e-05 10.6min
+epoch 1 step 4400/11382 tool_loss 0.0165 read_loss 0.3532 read_train_acc 0.953 lr 1.26e-05 10.9min
+epoch 1 step 4500/11382 tool_loss 0.0166 read_loss 0.2691 read_train_acc 0.963 lr 1.25e-05 11.2min
+epoch 1 step 4600/11382 tool_loss 0.0163 read_loss 0.2395 read_train_acc 0.980 lr 1.23e-05 11.4min
+epoch 1 step 4700/11382 tool_loss 0.0161 read_loss 0.2231 read_train_acc 0.978 lr 1.21e-05 11.6min
+epoch 1 step 4800/11382 tool_loss 0.0165 read_loss 0.4084 read_train_acc 0.958 lr 1.19e-05 11.9min
+epoch 1 step 4900/11382 tool_loss 0.0155 read_loss 0.3148 read_train_acc 0.975 lr 1.17e-05 12.1min
+epoch 1 step 5000/11382 tool_loss 0.0151 read_loss 0.2690 read_train_acc 0.973 lr 1.16e-05 12.4min
+epoch 1 step 5100/11382 tool_loss 0.0157 read_loss 0.2953 read_train_acc 0.968 lr 1.14e-05 12.6min
+epoch 1 step 5200/11382 tool_loss 0.0152 read_loss 0.2401 read_train_acc 0.970 lr 1.12e-05 12.9min
+epoch 1 step 5300/11382 tool_loss 0.0150 read_loss 0.2706 read_train_acc 0.960 lr 1.10e-05 13.1min
+epoch 1 step 5400/11382 tool_loss 0.0150 read_loss 0.2266 read_train_acc 0.973 lr 1.08e-05 13.4min
+epoch 1 step 5500/11382 tool_loss 0.0147 read_loss 0.4140 read_train_acc 0.948 lr 1.07e-05 13.6min
+epoch 1 step 5600/11382 tool_loss 0.0146 read_loss 0.2641 read_train_acc 0.973 lr 1.05e-05 13.9min
+epoch 2 step 5700/11382 tool_loss 0.0153 read_loss 0.1723 read_train_acc 0.968 lr 1.03e-05 14.1min
+epoch 2 step 5800/11382 tool_loss 0.0157 read_loss 0.2917 read_train_acc 0.968 lr 1.01e-05 14.4min
+epoch 2 step 5900/11382 tool_loss 0.0145 read_loss 0.3103 read_train_acc 0.963 lr 9.93e-06 14.6min
+epoch 2 step 6000/11382 tool_loss 0.0137 read_loss 0.2301 read_train_acc 0.975 lr 9.75e-06 14.9min
+epoch 2 step 6100/11382 tool_loss 0.0139 read_loss 0.1405 read_train_acc 0.983 lr 9.57e-06 15.1min
+epoch 2 step 6200/11382 tool_loss 0.0135 read_loss 0.1972 read_train_acc 0.973 lr 9.39e-06 15.3min
+epoch 2 step 6300/11382 tool_loss 0.0132 read_loss 0.1360 read_train_acc 0.978 lr 9.21e-06 15.6min
+epoch 2 step 6400/11382 tool_loss 0.0127 read_loss 0.2200 read_train_acc 0.975 lr 9.02e-06 15.8min
+epoch 2 step 6500/11382 tool_loss 0.0125 read_loss 0.2356 read_train_acc 0.975 lr 8.84e-06 16.1min
+epoch 2 step 6600/11382 tool_loss 0.0120 read_loss 0.2012 read_train_acc 0.975 lr 8.66e-06 16.3min
+epoch 2 step 6700/11382 tool_loss 0.0118 read_loss 0.2486 read_train_acc 0.975 lr 8.48e-06 16.6min
+epoch 2 step 6800/11382 tool_loss 0.0114 read_loss 0.1649 read_train_acc 0.970 lr 8.30e-06 16.8min
+epoch 2 step 6900/11382 tool_loss 0.0111 read_loss 0.1045 read_train_acc 0.980 lr 8.12e-06 17.1min
+epoch 2 step 7000/11382 tool_loss 0.0114 read_loss 0.0997 read_train_acc 0.985 lr 7.94e-06 17.3min
+epoch 2 step 7100/11382 tool_loss 0.0116 read_loss 0.1335 read_train_acc 0.978 lr 7.76e-06 17.6min
+epoch 2 step 7200/11382 tool_loss 0.0118 read_loss 0.1388 read_train_acc 0.985 lr 7.58e-06 17.8min
+epoch 2 step 7300/11382 tool_loss 0.0120 read_loss 0.1219 read_train_acc 0.988 lr 7.39e-06 18.0min
+epoch 2 step 7400/11382 tool_loss 0.0118 read_loss 0.1769 read_train_acc 0.978 lr 7.21e-06 18.3min
+epoch 2 step 7500/11382 tool_loss 0.0112 read_loss 0.2389 read_train_acc 0.968 lr 7.03e-06 18.5min
+epoch 2 step 7600/11382 tool_loss 0.0111 read_loss 0.2294 read_train_acc 0.963 lr 6.85e-06 18.8min
+epoch 2 step 7700/11382 tool_loss 0.0110 read_loss 0.2430 read_train_acc 0.970 lr 6.67e-06 19.0min
+epoch 2 step 7800/11382 tool_loss 0.0105 read_loss 0.2861 read_train_acc 0.963 lr 6.49e-06 19.3min
+epoch 2 step 7900/11382 tool_loss 0.0104 read_loss 0.2230 read_train_acc 0.968 lr 6.31e-06 19.5min
+epoch 2 step 8000/11382 tool_loss 0.0095 read_loss 0.2488 read_train_acc 0.960 lr 6.13e-06 19.8min
+epoch 2 step 8100/11382 tool_loss 0.0094 read_loss 0.0969 read_train_acc 0.990 lr 5.95e-06 20.0min
+epoch 2 step 8200/11382 tool_loss 0.0088 read_loss 0.0824 read_train_acc 0.990 lr 5.76e-06 20.3min
+epoch 2 step 8300/11382 tool_loss 0.0085 read_loss 0.2362 read_train_acc 0.973 lr 5.58e-06 20.5min
+epoch 2 step 8400/11382 tool_loss 0.0080 read_loss 0.1590 read_train_acc 0.975 lr 5.40e-06 20.8min
+epoch 2 step 8500/11382 tool_loss 0.0083 read_loss 0.1603 read_train_acc 0.980 lr 5.22e-06 21.0min
+epoch 2 step 8600/11382 tool_loss 0.0091 read_loss 0.2799 read_train_acc 0.968 lr 5.04e-06 21.3min
+epoch 2 step 8700/11382 tool_loss 0.0094 read_loss 0.1349 read_train_acc 0.970 lr 4.86e-06 21.5min
+epoch 2 step 8800/11382 tool_loss 0.0098 read_loss 0.1726 read_train_acc 0.975 lr 4.68e-06 21.8min
+epoch 2 step 8900/11382 tool_loss 0.0100 read_loss 0.1711 read_train_acc 0.973 lr 4.50e-06 22.0min
+epoch 2 step 9000/11382 tool_loss 0.0104 read_loss 0.1305 read_train_acc 0.983 lr 4.31e-06 22.3min
+epoch 2 step 9100/11382 tool_loss 0.0104 read_loss 0.1375 read_train_acc 0.980 lr 4.13e-06 22.5min
+epoch 2 step 9200/11382 tool_loss 0.0105 read_loss 0.1084 read_train_acc 0.985 lr 3.95e-06 22.8min
+epoch 2 step 9300/11382 tool_loss 0.0096 read_loss 0.2306 read_train_acc 0.970 lr 3.77e-06 23.0min
+epoch 2 step 9400/11382 tool_loss 0.0097 read_loss 0.2201 read_train_acc 0.973 lr 3.59e-06 23.3min
+epoch 2 step 9500/11382 tool_loss 0.0095 read_loss 0.1659 read_train_acc 0.973 lr 3.41e-06 23.5min
+epoch 2 step 9600/11382 tool_loss 0.0090 read_loss 0.2401 read_train_acc 0.963 lr 3.23e-06 23.8min
+epoch 2 step 9700/11382 tool_loss 0.0091 read_loss 0.1483 read_train_acc 0.983 lr 3.05e-06 24.0min
+epoch 2 step 9800/11382 tool_loss 0.0089 read_loss 0.1274 read_train_acc 0.980 lr 2.87e-06 24.3min
+epoch 2 step 9900/11382 tool_loss 0.0088 read_loss 0.2220 read_train_acc 0.968 lr 2.68e-06 24.5min
+epoch 2 step 10000/11382 tool_loss 0.0090 read_loss 0.0804 read_train_acc 0.985 lr 2.50e-06 24.8min
+epoch 2 step 10100/11382 tool_loss 0.0091 read_loss 0.1253 read_train_acc 0.985 lr 2.32e-06 25.0min
+epoch 2 step 10200/11382 tool_loss 0.0094 read_loss 0.1342 read_train_acc 0.973 lr 2.14e-06 25.2min
+epoch 2 step 10300/11382 tool_loss 0.0093 read_loss 0.1714 read_train_acc 0.980 lr 1.96e-06 25.5min
+epoch 2 step 10400/11382 tool_loss 0.0092 read_loss 0.1761 read_train_acc 0.973 lr 1.78e-06 25.7min
+epoch 2 step 10500/11382 tool_loss 0.0089 read_loss 0.0605 read_train_acc 0.990 lr 1.60e-06 26.0min
+epoch 2 step 10600/11382 tool_loss 0.0086 read_loss 0.1129 read_train_acc 0.983 lr 1.42e-06 26.2min
+epoch 2 step 10700/11382 tool_loss 0.0083 read_loss 0.0922 read_train_acc 0.980 lr 1.24e-06 26.5min
+epoch 2 step 10800/11382 tool_loss 0.0083 read_loss 0.1121 read_train_acc 0.983 lr 1.05e-06 26.7min
+epoch 2 step 10900/11382 tool_loss 0.0082 read_loss 0.0482 read_train_acc 0.993 lr 8.73e-07 27.0min
+epoch 2 step 11000/11382 tool_loss 0.0080 read_loss 0.1639 read_train_acc 0.978 lr 6.92e-07 27.2min
+epoch 2 step 11100/11382 tool_loss 0.0080 read_loss 0.1514 read_train_acc 0.980 lr 5.11e-07 27.5min
+epoch 2 step 11200/11382 tool_loss 0.0083 read_loss 0.0649 read_train_acc 0.993 lr 3.30e-07 27.7min
+epoch 2 step 11300/11382 tool_loss 0.0087 read_loss 0.1204 read_train_acc 0.978 lr 1.49e-07 28.0min
+epoch 2 step 11382/11382 tool_loss 0.0090 read_loss 0.1268 read_train_acc 0.975 lr 0.00e+00 28.2min
+完成：/home/isai-lab/hw2/models/sft_final（重新載入成功，參數量 63.91M，訓練 28.2 分鐘）

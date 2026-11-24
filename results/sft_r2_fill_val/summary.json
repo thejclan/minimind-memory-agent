@@ -1,0 +1,35 @@
+{
+  "agent": "MyAgent",
+  "model_dir": "models/sft_r2_fill",
+  "params_M": 63.91,
+  "data_dir": "data/val",
+  "max_context_chars": 300,
+  "score": "option",
+  "chat_template": true,
+  "memory": {
+    "per_type": {
+      "single": 1.0,
+      "update": 1.0,
+      "multi": 1.0,
+      "abstain": 1.0,
+      "distractor": 1.0,
+      "tool": 1.0
+    },
+    "macro_acc": 1.0,
+    "micro_acc": 1.0,
+    "n_questions": 300,
+    "seconds": 12.064282894134521
+  },
+  "tool": {
+    "format_validity": 1.0,
+    "decision_acc": 1.0,
+    "tool_acc": 1.0,
+    "arg_acc": 1.0,
+    "end_to_end": 1.0,
+    "n_items": 200,
+    "seconds": 61.0939667224884
+  },
+  "leaderboard_score": 1.0,
+  "total_seconds": 73.16457629203796,
+  "within_time_limit": true
+}

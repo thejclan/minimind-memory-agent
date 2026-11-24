@@ -1,0 +1,44 @@
+== 1. 產生 SFT 資料（train + A + B + C） 22:43
+context_mode = chrono
+  pseudo_test    read    2000 筆
+  pseudo_test    tool     359 筆
+  train          read    6000 筆
+  train          tool    3590 筆
+  train_extraA   read    6000 筆
+  train_extraA   tool    3531 筆
+  train_extraC   read    6000 筆
+  train_extraC   tool    3565 筆
+寫入 data/sft/sft_final.jsonl
+== 2. 訓練最終模型 22:44
+訓練資料：tool 11045 筆、read 20000 筆 ｜回覆結尾： '<|im_end|>\n'
+完成：/home/isai-lab/hw2/models/sft_final（重新載入成功，參數量 63.91M，訓練 28.2 分鐘）
+== 3. D 套盲測 23:12
+sft_v1_myagent_blind: 
+sft_r2_chrono_blind: Leaderboard Score = 0.7 × 0.9046 + 0.3 × 0.9200 = 0.9092
+  single      0.9150
+  update      0.8750
+  multi       0.9145
+  abstain     0.9737
+  distractor  0.9444
+  tool        0.8050
+Tool: format=1.000 decision=0.990 tool=0.992 arg=0.916 e2e=0.920
+sft_final_blind: Leaderboard Score = 0.7 × 0.9088 + 0.3 × 0.9100 = 0.9091
+  single      0.9250
+  update      0.8355
+  multi       0.9342
+  abstain     0.9934
+  distractor  0.9444
+  tool        0.8200
+Tool: format=1.000 decision=0.990 tool=0.988 arg=0.904 e2e=0.910
+== 4. 最終模型的 val 與 TMMLU+ 退化檢查 23:16
+sft_final_val: Leaderboard Score = 0.7 × 0.9961 + 0.3 × 1.0000 = 0.9973
+  single      1.0000
+  update      1.0000
+  multi       1.0000
+  abstain     0.9767
+  distractor  1.0000
+  tool        1.0000
+Tool: format=1.000 decision=1.000 tool=1.000 arg=1.000 e2e=1.000
+tmmlu sft_final holdout:   MACRO (official) 0.2592   micro            0.2661 ± 0.0205 
+tmmlu sft_final holdout_shuffled:   MACRO (official) 0.2794   micro            0.2661 ± 0.0205 
+== 完成 23:18

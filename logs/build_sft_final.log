@@ -1,0 +1,10 @@
+context_mode = chrono
+  pseudo_test    read    2000 筆
+  pseudo_test    tool     359 筆
+  train          read    6000 筆
+  train          tool    3590 筆
+  train_extraA   read    6000 筆
+  train_extraA   tool    3531 筆
+  train_extraC   read    6000 筆
+  train_extraC   tool    3565 筆
+寫入 data/sft/sft_final.jsonl

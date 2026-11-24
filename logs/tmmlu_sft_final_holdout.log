@@ -1,0 +1,15 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Model: models/sft_final | params: 63.9M | device: cuda
+Questions: 466 | subjects: 66 | few-shot: 0 | chat template: False
+  200/466  running acc=0.3150
+  400/466  running acc=0.2650
+
+=== Results ===
+  Humanities       0.2095
+  Other            0.2558
+  STEM             0.2450
+  Social Sciences  0.3263
+  MACRO (official) 0.2592
+  micro            0.2661 ± 0.0205
+  time: 3.8s | truncated prompts: 0
+Saved results to results/tmmlu_sft_final_holdout.json

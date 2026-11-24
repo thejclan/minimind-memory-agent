@@ -1,0 +1,25 @@
+model params=63.9M  chat_template=True  agent=MyAgent  data=data/blind_test
+  memory 10/100 personas, 4s
+  memory 20/100 personas, 8s
+  memory 30/100 personas, 12s
+  memory 40/100 personas, 15s
+  memory 50/100 personas, 19s
+  memory 60/100 personas, 22s
+  memory 70/100 personas, 27s
+  memory 80/100 personas, 31s
+  memory 90/100 personas, 34s
+  memory 100/100 personas, 38s
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+
+================ RESULT ================
+Memory Accuracy (macro) = 0.9088   (micro 0.9050, random ≈ 0.25)
+  single      0.9250
+  update      0.8355
+  multi       0.9342
+  abstain     0.9934
+  distractor  0.9444
+  tool        0.8200
+Tool: format=1.000 decision=0.990 tool=0.988 arg=0.904 e2e=0.910
+Leaderboard Score = 0.7 × 0.9088 + 0.3 × 0.9100 = 0.9091
+Time: 121s  (limit 1800s, ok=True)
+Saved to results/sft_final_blind

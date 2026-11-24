@@ -1,0 +1,35 @@
+{
+  "agent": "MyAgent",
+  "model_dir": "models/sft_r2_chrono",
+  "params_M": 63.91,
+  "data_dir": "data/blind_test",
+  "max_context_chars": 300,
+  "score": "option",
+  "chat_template": true,
+  "memory": {
+    "per_type": {
+      "single": 0.915,
+      "update": 0.875,
+      "multi": 0.9144736842105263,
+      "abstain": 0.9736842105263158,
+      "distractor": 0.9444444444444444,
+      "tool": 0.805
+    },
+    "macro_acc": 0.9046003898635478,
+    "micro_acc": 0.9,
+    "n_questions": 1000,
+    "seconds": 38.459269523620605
+  },
+  "tool": {
+    "format_validity": 1.0,
+    "decision_acc": 0.99,
+    "tool_acc": 0.9920318725099602,
+    "arg_acc": 0.9163346613545816,
+    "end_to_end": 0.92,
+    "n_items": 300,
+    "seconds": 81.35239768028259
+  },
+  "leaderboard_score": 0.9092202729044835,
+  "total_seconds": 119.89737915992737,
+  "within_time_limit": true
+}
