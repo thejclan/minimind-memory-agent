@@ -1,0 +1,5 @@
+  train          read    6000 筆
+  train          tool    3000 筆
+  train_extraA   read    6000 筆
+  train_extraA   tool    3000 筆
+寫入 data/sft/sft.jsonl
