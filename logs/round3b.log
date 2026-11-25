@@ -1,0 +1,37 @@
+sft_v1_myagent_blind: Leaderboard Score = 0.7 × 0.7688 + 0.3 × 0.7667 = 0.7682
+  single      0.8200
+  update      0.6316
+  multi       0.7039
+  abstain     0.9671
+  distractor  0.7153
+  tool        0.7750
+Tool: format=1.000 decision=0.970 tool=0.976 arg=0.733 e2e=0.767
+Time: 118s  (limit 1800s, ok=True)
+sft_final_rules4_blind: Leaderboard Score = 0.7 × 0.9388 + 0.3 × 0.9433 = 0.9401
+  single      0.9250
+  update      0.8355
+  multi       0.9342
+  abstain     0.9934
+  distractor  0.9444
+  tool        1.0000
+Tool: format=1.000 decision=0.993 tool=0.996 arg=0.940 e2e=0.943
+Time: 123s  (limit 1800s, ok=True)
+sft_final_rules4_pseudo: Leaderboard Score = 0.7 × 0.9827 + 0.3 × 0.9900 = 0.9849
+  single      0.9650
+  update      1.0000
+  multi       1.0000
+  abstain     0.9934
+  distractor  0.9379
+  tool        1.0000
+Tool: format=1.000 decision=1.000 tool=1.000 arg=0.988 e2e=0.990
+Time: 121s  (limit 1800s, ok=True)
+sft_final_rules4_val: Leaderboard Score = 0.7 × 0.9961 + 0.3 × 1.0000 = 0.9973
+  single      1.0000
+  update      1.0000
+  multi       1.0000
+  abstain     0.9767
+  distractor  1.0000
+  tool        1.0000
+Tool: format=1.000 decision=1.000 tool=1.000 arg=1.000 e2e=1.000
+Time: 68s  (limit 1800s, ok=True)
+== 完成 12:40

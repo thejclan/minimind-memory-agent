@@ -207,11 +207,11 @@ class MyAgent(BaseAgent):
         daughter = lambda: self._number(("女兒",))
         son = lambda: self._number(("兒子",))
         # 家裡總共幾個小孩（含自己）= 兄弟姊妹數 + 1
-        if re.search(r"包含我|包括我|算上我|加上我|連我|含我", q) or re.search(r"(爸媽|父母).*生了", q):
-            v = self._number(("兄弟姊妹", "手足"))
+        if re.search(r"包含我|包括我|算上我|算我|加上我(?!兒子|女兒|的)|連我|含我", q) or re.search(r"(爸媽|父母).*生了", q):
+            v = self._number(("兄弟姊妹", "手足", "兄姊", "弟妹", "兄弟", "姊妹"))
             return ABSTAIN if v is None else f"計算結果：{v + 1}個"
         # 一年的房租 = 月租 × 12
-        if "租" in q and re.search(r"一年|整年|每年|年", q):
+        if "租" in q and re.search(r"年|十二個月|12個月", q):
             v = self._number(("房租", "租", "房東"))
             return ABSTAIN if v is None else f"計算結果：{v * 12}元"
         who = son if "兒子" in q else daughter if "女兒" in q else None
@@ -221,7 +221,7 @@ class MyAgent(BaseAgent):
             return ABSTAIN if v is None else f"計算結果：{v + 1}歲"
         # 還要幾年滿 N 歲 = N − 年齡
         m = re.search(r"(\d+)歲", q)
-        if who and m and "年" in q.replace(m.group(0), ""):
+        if who and m and re.search(r"年|多久|還要|還有|再過|幾時|什麼時候|才", q.replace(m.group(0), "")):
             v = who()
             return ABSTAIN if v is None else f"計算結果：{int(m.group(1)) - v}年"
         # 兩個小孩：相差幾歲 / 加起來幾歲
@@ -285,14 +285,28 @@ class MyAgent(BaseAgent):
 
     def next_action(self, context: list) -> str:
         out = super().next_action(context)
-        last = context[-1] if context else ""
+        return self.postprocess(out, context[-1] if context else "")
+
+    CALC_ASK = re.compile(r"幫我算|算一下|算算|等於|是多少|多少錢|還剩|剩多少|一共|總共|合計|加起來")
+
+    @classmethod
+    def postprocess(cls, out, last):
+        call = lambda name, args: "<tool_call>\n" + json.dumps({"name": name, "arguments": args}, ensure_ascii=False) + "\n</tool_call>"
         # 問今天日期／星期的句子一定要查 get_date（模型漏判時補上）
-        if self.DATE_RE.search(last) and "get_date" not in out:
-            return "<tool_call>\n" + json.dumps({"name": "get_date", "arguments": {}}, ensure_ascii=False) + "\n</tool_call>"
+        if cls.DATE_RE.search(last) and "get_date" not in out:
+            return call("get_date", {})
+        # 句子裡有兩個以上的數字、又在問計算結果 → 一定是 calculator
+        if len(re.findall(r"\d+", last)) >= 2 and cls.CALC_ASK.search(last) and '"calculator"' not in out:
+            expr = cls.fix_expression("", last)
+            if expr:
+                return call("calculator", {"expression": expr})
         if "<tool_call>" not in out:
             return out
-        out = self.repair_call(out)
-        return self.normalize_args(out, last)
+        out = cls.repair_call(out)
+        # 問句（以問號結尾）不是在陳述自己的資訊，不該 memory_save
+        if re.search(r"[？?]\s*$", last) and '"memory_save"' in out:
+            return "好問題！"
+        return cls.normalize_args(out, last)
 
     # ------------------------------------------------------------------ 工具參數正規化
     OPS = [("/", re.compile(r"除以|平分|分給|每人|一人")),
@@ -312,8 +326,10 @@ class MyAgent(BaseAgent):
         "大學主修": "主修 科系 大學 系 念 讀", "起床時間": "起床 醒 起來 鬧鐘", "女兒年齡": "女兒",
         "兒子年齡": "兒子", "房租": "房租 租 房東", "兄弟姊妹數": "兄弟姊妹 手足 兄 姊 弟 妹 孩 家",
     }
-    KEY_CONFLICT = {"最喜歡的食物": "甜點 早餐 午餐 晚餐 零食 水果 飲料 喝 點心 宵夜 茶 咖啡",
-                    "起床時間": "睡 上床 就寢", "名字": "寵物 牠", "電影類型": "書 小說 追劇 影集"}
+    KEY_CONFLICT = {"最喜歡的食物": "甜點 早餐 午餐 晚餐 零食 水果 飲料 喝 點心 宵夜 茶 咖啡 書 小說 看",
+                    "居住地": "租", "通勤方式": "身分 身份 工作是 職業",
+                    "起床時間": "睡 上床 就寢 加起來 看起來 聽起來", "名字": "寵物 牠", "電影類型": "書 小說 追劇 影集"}
+    NUMERIC_KEYS = {"房租", "女兒年齡", "兒子年齡", "兄弟姊妹數"}
     FILLER = re.compile(r"什麼|哪一|哪個|哪種|哪裡|多少|幾|是|的|我|嗎|呢|啦|喔|了|[，。！？?!、\s]")
 
     @classmethod
@@ -328,6 +344,13 @@ class MyAgent(BaseAgent):
             grounded = bool(key) and key in text or (len(key) > 2 and key[:2] in text)
         if grounded:
             return key
+        # 換成原句有明確證據的公開屬性名稱（只看兩個字以上的證據詞，「租」例外）
+        cands = [k for k, ev2 in cls.KEY_EVIDENCE.items() if k != key and
+                 any((len(w) >= 2 or k == "房租") and w not in ("喜歡", "上班", "生活", "哪裡") and w in text
+                     for w in ev2.split()) and
+                 not any(w in text for w in cls.KEY_CONFLICT.get(k, "").split())]
+        if len(cands) == 1:
+            return cands[0]
         desc = text.replace(value, "") if value else text
         desc = cls.FILLER.sub("", desc)
         return desc if len(desc) >= 2 else key
@@ -353,6 +376,9 @@ class MyAgent(BaseAgent):
         elif name == "memory_save" and isinstance(args.get("value"), str):
             args["value"] = cls.fix_value(args["value"], last)
             args["key"] = cls.ground_key(args.get("key"), last, args["value"])
+            nums = re.findall(r"\d+", last)
+            if args["key"] in cls.NUMERIC_KEYS and not re.search(r"\d", args["value"]) and nums:
+                args["value"] = nums[-1]                 # 數值屬性的值一定是數字
         elif name == "memory_search":
             args["query"] = cls.ground_key(args.get("query"), last)
         else:
