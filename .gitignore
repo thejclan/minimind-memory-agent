@@ -1,4 +1,4 @@
-# 助教提供的檔案與資料（未經授權不公開）
+# Evaluation harness, data generator and data (not redistributed)
 eval_agent.py
 agent_base.py
 tool_spec.json
@@ -7,14 +7,23 @@ templates_public.py
 check_data.py
 README_*.md
 MD5SUMS_public
-data/
 hw2_student_release.zip
-# 每題的預測細節含 val 題目內容
+data/
+
+# Model weights and large outputs
+models/
+embedder/
 results/*/memory_pred.jsonl
 results/*/tool_pred.jsonl
-# 模型與打包
-models/
-submission/*/model/
+
+# Packaging files kept outside the repository
+submission/
+data_manifest.md
+make_submission.sh
+MD5SUMS
 *.zip
+*.pdf
+*.docx
+
 __pycache__/
 *:Zone.Identifier
